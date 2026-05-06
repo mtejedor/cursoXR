@@ -1,70 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Casa A-Frame Sencilla</title>
-    <<script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
-    <style>
-        body { margin: 0; overflow: hidden; }
-        .info {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0,0,0,0.5);
-            color: white;
-            padding: 8px;
-            border-radius: 5px;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-        }
-    </style>
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
 </head>
 <body>
-    <div class="info">
-        🏠 Casa A-Frame<br>
-        WASD + ratón para moverte
-    </div>
-
+    
     <a-scene background="color: #87CEEB">
+
         <!-- Suelo -->
         <a-plane position="0 0 0" rotation="-90 0 0" width="30" height="30" color="#3d8c40"></a-plane>
 
-        <!-- Paredes básicas -->
-        <!-- Frente -->
-        <a-box position="0 2 0" width="6" height="3" depth="0.3" color="#e6c9a0"></a-box>
-        <!-- Atrás -->
-        <a-box position="0 2 -6" width="6" height="3" depth="0.3" color="#e6c9a0"></a-box>
-        <!-- Izquierda -->
-        <a-box position="-3 2 -3" width="0.3" height="3" depth="6" color="#deb97a"></a-box>
-        <!-- Derecha -->
-        <a-box position="3 2 -3" width="0.3" height="3" depth="6" color="#deb97a"></a-box>
+        <!-- Paredes -->
+        <a-box position="0 2 0"   width="6" height="3" depth="0.3" color="#e6c9a0"></a-box>     <!-- Frente -->
+        <a-box position="0 2 -6"  width="6" height="3" depth="0.3" color="#e6c9a0"></a-box>     <!-- Atrás -->
+        <a-box position="-3 2 -3" width="0.3" height="3" depth="6" color="#deb97a"></a-box>    <!-- Izquierda -->
+        <a-box position="3 2 -3"  width="0.3" height="3" depth="6" color="#deb97a"></a-box>    <!-- Derecha -->
 
-        <!-- Techo A-Frame (dos lados) -->
-        <a-entity position="0 5.2 -3" rotation="0 0 40" 
-                  geometry="primitive: plane; width: 9; height: 7" 
-                  material="color: #c44; side: double"></a-entity>
+        <!-- === TECHO A-FRAME (mejorado) === -->
+        <!-- Techo izquierdo -->
+        <a-entity 
+            position="-0.1 5.3 -3" 
+            rotation="0 0 35" 
+            geometry="primitive: plane; width: 9; height: 8" 
+            material="color: #c44; side: double"></a-entity>
         
-        <a-entity position="0 5.2 -3" rotation="0 0 -40" 
-                  geometry="primitive: plane; width: 9; height: 7" 
-                  material="color: #c44; side: double"></a-entity>
+        <!-- Techo derecho -->
+        <a-entity 
+            position="0.1 5.3 -3" 
+            rotation="0 0 -35" 
+            geometry="primitive: plane; width: 9; height: 8" 
+            material="color: #c44; side: double"></a-entity>
 
         <!-- Puerta -->
         <a-box position="0 1.4 0.2" width="1" height="2" depth="0.1" color="#4a2c1f"></a-box>
 
         <!-- Ventanas -->
-        <!-- Ventana izquierda -->
         <a-plane position="-2 2 0.2" width="1" height="1" color="#81d4fa" material="side: double"></a-plane>
-        <!-- Ventana derecha -->
-        <a-plane position="2 2 0.2" width="1" height="1" color="#81d4fa" material="side: double"></a-plane>
+        <a-plane position="2 2 0.2"  width="1" height="1" color="#81d4fa" material="side: double"></a-plane>
 
-        <!-- Luz del sol -->
+        <!-- Luces -->
         <a-light type="directional" position="10 20 10" intensity="0.8"></a-light>
-        <!-- Luz interior -->
         <a-light type="point" position="0 3 -2" intensity="0.5" color="#ffeecc"></a-light>
 
         <!-- Cámara -->
         <a-camera position="10 3 12" wasd-controls look-controls></a-camera>
+
     </a-scene>
 </body>
 </html>
