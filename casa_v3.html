@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Casa A-Frame con Bandera</title>
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+</head>
+<body>
+    <a-scene>
+        <!-- Entorno -->
+        <a-entity environment="preset: forest; skyType: atmosphere; lighting: point"></a-entity>
+
+        <!-- Casa principal -->
+        <a-entity position="0 0 -10">
+            <!-- Paredes de la casa -->
+            <a-box position="0 2 0" width="10" height="4" depth="8" color="#F5DEB3"></a-box>
+
+            <!-- Techo -->
+            <a-cone position="0 5.5 0" radius-bottom="7.5" height="3.5" color="#8B4513" segments-radial="4" rotation="0 45 0"></a-cone>
+
+            <!-- Puerta -->
+            <a-box position="0 1 4.1" width="2" height="3" depth="0.2" color="#654321"></a-box>
+            <a-sphere position="-0.7 1 4.25" radius="0.1" color="#FFD700"></a-sphere>
+
+            <!-- Ventanas -->
+            <a-box position="-3 2 4.1" width="2" height="2" depth="0.2" color="#87CEEB"></a-box>
+            <a-box position="3 2 4.1" width="2" height="2" depth="0.2" color="#87CEEB"></a-box>
+            <a-box position="-3 2 -4.1" width="2" height="2" depth="0.2" color="#87CEEB"></a-box>
+            <a-box position="3 2 -4.1" width="2" height="2" depth="0.2" color="#87CEEB"></a-box>
+
+            <!-- Chimenea -->
+            <a-box position="3 6.5 -2" width="1" height="2.5" depth="1" color="#8B0000"></a-box>
+
+            <!-- Porche -->
+            <a-box position="0 0.2 5" width="4" height="0.4" depth="2" color="#8B4513"></a-box>
+            <a-cylinder position="-1.5 0.5 5.5" radius="0.15" height="1" color="#654321"></a-cylinder>
+            <a-cylinder position="1.5 0.5 5.5" radius="0.15" height="1" color="#654321"></a-cylinder>
+
+            <!-- Mástil de la bandera -->
+            <a-cylinder position="0 9 0" radius="0.08" height="4" color="#C0C0C0"></a-cylinder>
+            <a-sphere position="0 11 0" radius="0.15" color="#FFD700"></a-sphere>
+
+            <!-- Bandera ondeando con animación más realista -->
+            <a-entity position="0 10.5 0">
+                <a-plane position="1 0 0" width="2.5" height="1.5" color="#FF0000" side="double" 
+                    animation="property: scale; from: 1 1 1; to: 0.95 1 1; dir: alternate; dur: 800; loop: true; easing: easeInOutSine">
+                </a-plane>
+                <a-plane position="1 0 0.01" width="2.5" height="1.5" color="#FFFFFF" side="double"
+                    animation="property: scale; from: 1 1 1; to: 0.95 1 1; dir: alternate; dur: 800; loop: true; easing: easeInOutSine; delay: 100">
+                </a-plane>
+                <a-plane position="1 0 0.02" width="2.5" height="1.5" color="#0000FF" side="double"
+                    animation="property: scale; from: 1 1 1; to: 0.95 1 1; dir: alternate; dur: 800; loop: true; easing: easeInOutSine; delay: 200">
+                </a-plane>
+            </a-entity>
+        </a-entity>
+
+        <!-- Árboles decorativos -->
+        <a-entity position="-12 0 -8">
+            <a-cylinder position="0 1.5 0" radius="0.4" height="3" color="#8B4513"></a-cylinder>
+            <a-cone position="0 4.5 0" radius-bottom="2.5" height="4" color="#228B22"></a-cone>
+        </a-entity>
+
+        <a-entity position="12 0 -6">
+            <a-cylinder position="0 1.5 0" radius="0.4" height="3" color="#8B4513"></a-cylinder>
+            <a-cone position="0 4.5 0" radius-bottom="2.5" height="4" color="#228B22"></a-cone>
+        </a-entity>
+
+        <a-entity position="-10 0 5">
+            <a-cylinder position="0 1.5 0" radius="0.4" height="3" color="#8B4513"></a-cylinder>
+            <a-cone position="0 4.5 0" radius-bottom="2.5" height="4" color="#228B22"></a-cone>
+        </a-entity>
+
+        <!-- Cámara con controles de movimiento WASD -->
+        <a-entity camera look-controls wasd-controls="acceleration: 100" position="0 2 8"></a-entity>
+    </a-scene>
+</body>
+</html>
