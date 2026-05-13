@@ -5,7 +5,7 @@
     <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
 </head>
 <body>
-    <a-scene background="color: #050510" renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true; exposure: 1.2">
+    <a-scene background="color: #050510" renderer="antialias: true; colorManagement: true; exposure: 1.2">
         
         <!-- Cámara posicionada para ver todo el sistema -->
         <a-entity position="0 30 100" rotation="-25 0 0">
@@ -36,8 +36,6 @@
                 id="sol" 
                 radius="8" 
                 color="#FDB813"
-                emissive="#FF8C00"
-                emissive-intensity="1.2"
                 shader="flat"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-sphere>
