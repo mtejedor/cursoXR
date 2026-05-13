@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sistema Solar VR</title>
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+</head>
+<body>
+    <a-scene background="color: #050510" renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true; exposure: 1.2">
+        
+        <!-- Cámara posicionada para ver todo el sistema -->
+        <a-entity position="0 30 100" rotation="-25 0 0">
+            <a-camera look-controls="pointerLockEnabled: false" wasd-controls="acceleration: 300"></a-camera>
+        </a-entity>
+
+                <!-- Assets de texturas de Solar System Scope (NASA-based) -->
+        <a-assets>
+            <!-- Texturas de planetas -->
+            <img id="sol_img" src="/texturas/sol.jpg">
+            <img id="mercurio_img" src="/texturas/mercurio.jpg">
+            <img id="venus_img" src="/texturas/venus.jpg">
+            <img id="tierra_img" src="/texturas/tierra.jpg">
+            <img id="marte_img" src="/texturas/marte.jpg">
+            <img id="jupiter_img" src="/texturas/jupiter.jpg">
+            <img id="saturno_img" src="/texturas/saturno.jpg">
+            <img id="urano_img" src="/texturas/urano.jpg">
+            <img id="neptuno_img" src="/texturas/neptuno.jpg">
+            <img id="luna_img" src="/texturas/luna.jpg">
+            
+            <!-- Textura de anillos de Saturno -->
+            <img id="anillo_saturno" src="/texturas/anillo_saturno.png">
+            
+            <!-- Fondo estelar
+            <img id="fondo" src="/texturas/fondo_estelar.jpg">
+            -->
+        </a-assets>
+
+        <!-- ========== ILUMINACIÓN ========== -->
+        
+        <!-- Luz ambiental aumentada - ilumina suavemente TODOS los planetas -->
+        <a-entity light="type: ambient; color: #4a4a6a; intensity: 0.6"></a-entity>
+        
+        <!-- Luz puntual del Sol - ilumina desde el centro -->
+        <a-entity light="type: point; color: #FFF8DC; intensity: 5; distance: 400; decay: 0.5; castShadow: true" position="0 0 0"></a-entity>
+        
+        <!-- Luz hemisférica - simula luz reflejada del espacio (arriba) -->
+        <a-entity light="type: hemisphere; color: #87CEEB; groundColor: #1a1a2e; intensity: 0.4" position="0 100 0"></a-entity>
+        
+        <!-- Luz direccional suave desde el Sol para sombras definidas -->
+        <a-entity light="type: directional; color: #FFF8DC; intensity: 0.8; castShadow: true" position="10 10 10"></a-entity>
+
+        <!-- ========== FONDO ESPACIAL CON ESTRELLAS ========== -->
+        <a-sky color="#020205"></a-sky>
+        <a-entity id="stars-container"></a-entity>
+
+        <!-- ========== SOL ========== -->
+        <a-entity position="0 0 0">
+            <a-sphere 
+                id="sol" 
+                radius="8" 
+                color="#FDB813"
+                emissive="#FF8C00"
+                emissive-intensity="1.2"
+                shader="flat"
+                src="#sol_img"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+            </a-sphere>
+            <a-sphere radius="9" color="#FFA500" opacity="0.4" transparent="true" shader="flat"
+                animation="property: rotation; to: 0 -360 0; loop: true; dur: 30000; easing: linear">
+            </a-sphere>
+            <a-sphere radius="11" color="#FF6347" opacity="0.15" transparent="true" shader="flat">
+            </a-sphere>
+        </a-entity>
+
+        <!-- ========== MERCURIO ========== -->
+        <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear">
+            <a-sphere 
+                id="mercurio"
+                position="18 0 0" 
+                radius="0.8" 
+                color="#B8B8B8"
+                src="#mercurio_img"
+                metalness="0.1"
+                roughness="0.9"
+                animation="property: rotation; to: 0 -360 0; loop: true; dur: 10000; easing: linear">
+            </a-sphere>
+            <a-ring radius-inner="17.9" radius-outer="18.1" rotation="-90 0 0" color="#444" opacity="0.15" shader="flat"></a-ring>
+        </a-entity>
+
+        <!-- ========== VENUS ========== -->
+        <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 7000; easing: linear">
+            <a-sphere 
+                id="venus"
+                position="26 0 0" 
+                radius="1.5" 
+                color="#F5F5DC"
+                src="#venus_img"
+                metalness="0.2"
+                roughness="0.7"
+                animation="property: rotation; to: 0 -360 0; loop: true; dur: 15000; easing: linear">
+            </a-sphere>
+            <a-sphere radius="1.55" color="#FFFACD" opacity="0.2" transparent="true"></a-sphere>
+            <a-ring radius-inner="25.9" radius-outer="26.1" rotation="-90 0 0" color="#444" opacity="0.15" shader="flat"></a-ring>
+        </a-entity>
+
+        <!-- ========== TIERRA Y LUNA ========== -->
+        <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear">
+            <a-entity position="36 0 0">
+                
+                <!-- Tierra -->
+                <a-sphere 
+                    id="tierra"
+                    radius="1.6" 
+                    color="#228BFF"
+                    src="#tierra_img"
+                    metalness="0.15"
+                    roughness="0.5"
+                    animation="property: rotation; to: 0 360 0; loop: true; dur: 2000; easing: linear">
+                </a-sphere>
+                
+
+                <!-- ========== LUNA ========== -->
+                <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 3000; easing: linear">
+                    <a-sphere 
+                        id="luna"
+                        position="3.5 0 0" 
+                        radius="0.4" 
+                        color="#D3D3D3"
+                        src="#luna_img"
+                        metalness="0.05"
+                        roughness="0.95"
+                        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000; easing: linear">
+                    </a-sphere>
+                    <a-ring radius-inner="3.4" radius-outer="3.6" rotation="-90 0 0" color="#555" opacity="0.1" shader="flat"></a-ring>
+                </a-entity>
+            </a-entity>
+            <a-ring radius-inner="35.9" radius-outer="36.1" rotation="-90 0 0" color="#444" opacity="0.15" shader="flat"></a-ring>
+        </a-entity>
+
+        <!-- ========== MARTE ========== -->
+        <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear">
+            <a-sphere 
+                id="marte"
+                position="48 0 0" 
+                radius="0.9" 
+                color="#E25822"
+                src="#marte_img"
+                metalness="0.1"
+                roughness="0.85"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 2200; easing: linear">
+            </a-sphere>
+            <a-sphere radius="0.91" color="#F5F5DC" opacity="0.35" transparent="true"></a-sphere>
+            <a-ring radius-inner="47.9" radius-outer="48.1" rotation="-90 0 0" color="#444" opacity="0.15" shader="flat"></a-ring>
+        </a-entity>
+
+        <!-- ========== JÚPITER ========== -->
+        <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 25000; easing: linear">
+            <a-entity position="75 0 0">
+                <a-sphere 
+                    id="jupiter"
+                    radius="5.5" 
+                    color="#DAA520"
+                    src="#jupiter_img"
+                    metalness="0.05"
+                    roughness="0.8"
+                    animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear">
+                </a-sphere>
+                <a-ring radius-inner="5.4" radius-outer="5.6" rotation="0 0 0" color="#8B4513" opacity="0.4" transparent="true"></a-ring>
+                <a-ring radius-inner="5.3" radius-outer="5.5" rotation="0 0 0" color="#F4A460" opacity="0.3" transparent="true"></a-ring>
+            </a-entity>
+            <a-ring radius-inner="74.9" radius-outer="75.1" rotation="-90 0 0" color="#444" opacity="0.15" shader="flat"></a-ring>
+        </a-entity>
+
+        <!-- ========== SATURNO ========== -->
+        <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 35000; easing: linear">
+            <a-entity position="110 0 0">
+                <!-- Saturno -->
+                <a-sphere 
+                    id="saturno"
+                    radius="4.5" 
+                    color="#F0E68C"
+                    src="#saturno_img"
+                    metalness="0.1"
+                    roughness="0.7"
+                    animation="property: rotation; to: 0 360 0; loop: true; dur: 4500; easing: linear">
+                </a-sphere>
+                
+                <!-- Anillos de Saturno -->
+                <!-- rotation="-90 0 0" pone el anillo horizontal, paralelo al plano orbital -->
+                <a-entity rotation="-90 0 0">
+                    <a-ring 
+                        radius-inner="6" 
+                        radius-outer="7" 
+                        color="#D2B48C" 
+                        opacity="0.7"
+                        transparent="true"
+                        side="double"
+                        shader="flat">
+                    </a-ring>
+                    <a-ring 
+                        radius-inner="7.2" 
+                        radius-outer="8.5" 
+                        color="#F5DEB3" 
+                        opacity="0.9"
+                        transparent="true"
+                        side="double"
+                        shader="flat">
+                    </a-ring>
+                    <a-ring 
+                        radius-inner="8.7" 
+                        radius-outer="10" 
+                        color="#DEB887" 
+                        opacity="0.6"
+                        transparent="true"
+                        side="double"
+                        shader="flat">
+                    </a-ring>
+                </a-entity>
+            </a-entity>
+            <a-ring radius-inner="109.9" radius-outer="110.1" rotation="-90 0 0" color="#444" opacity="0.15" shader="flat"></a-ring>
+        </a-entity>
+
+
+        <!-- ========== URANO ========== -->
+        <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 50000; easing: linear">
+            <a-sphere 
+                id="urano"
+                position="145 0 0" 
+                radius="2.8" 
+                color="#40E0D0"
+                src="#urano_img"
+                metalness="0.2"
+                roughness="0.4"
+                animation="property: rotation; to: 0 -360 0; loop: true; dur: 6000; easing: linear">
+            </a-sphere>
+            <a-sphere radius="2.85" color="#E0FFFF" opacity="0.25" transparent="true"></a-sphere>
+            <a-ring radius-inner="144.9" radius-outer="145.1" rotation="-90 0 0" color="#444" opacity="0.15" shader="flat"></a-ring>
+        </a-entity>
+
+        <!-- ========== NEPTUNO ========== -->
+        <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 65000; easing: linear">
+            <a-sphere 
+                id="neptuno"
+                position="175 0 0" 
+                radius="2.7" 
+                color="#1E90FF"
+                src="#neptuno_img"
+                metalness="0.15"
+                roughness="0.5"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 5500; easing: linear">
+            </a-sphere>
+            <a-sphere radius="2.75" color="#00BFFF" opacity="0.2" transparent="true"></a-sphere>
+            <a-ring radius-inner="174.9" radius-outer="175.1" rotation="-90 0 0" color="#444" opacity="0.15" shader="flat"></a-ring>
+        </a-entity>
+
+        <!-- Suelo de referencia -->
+        <a-plane position="0 -30 0" rotation="-90 0 0" width="500" height="500" color="#0a0a15" opacity="0.3" transparent="true"></a-plane>
+
+    </a-scene>
+
+    <!-- ========== SCRIPT PARA GENERAR ESTRELLAS ========== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const starsContainer = document.querySelector('#stars-container');
+            const starCount = 800;
+            const distance = 250;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('a-sphere');
+                
+                // Posición esférica aleatoria
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                
+                const x = distance * Math.sin(phi) * Math.cos(theta);
+                const y = distance * Math.sin(phi) * Math.sin(theta);
+                const z = distance * Math.cos(phi);
+                
+                const size = Math.random() * 0.3 + 0.05;
+                const brightness = Math.random() * 0.8 + 0.2;
+                
+                star.setAttribute('position', `${x} ${y} ${z}`);
+                star.setAttribute('radius', size);
+                star.setAttribute('color', '#FFFFFF');
+                star.setAttribute('opacity', brightness);
+                star.setAttribute('shader', 'flat');
+                
+                starsContainer.appendChild(star);
+            }
+        });
+    </script>
+</body>
+</html>

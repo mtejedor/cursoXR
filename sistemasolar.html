@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Sistema Solar VR - Iluminación Mejorada</title>
+    <title>Sistema Solar VR</title>
     <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
 </head>
 <body>
@@ -13,7 +12,7 @@
             <a-camera look-controls="pointerLockEnabled: false" wasd-controls="acceleration: 300"></a-camera>
         </a-entity>
 
-        <!-- ========== ILUMINACIÓN MEJORADA ========== -->
+        <!-- ========== ILUMINACIÓN ========== -->
         
         <!-- Luz ambiental aumentada - ilumina suavemente TODOS los planetas -->
         <a-entity light="type: ambient; color: #4a4a6a; intensity: 0.6"></a-entity>
@@ -29,12 +28,12 @@
 
         <!-- ========== FONDO ESPACIAL CON ESTRELLAS ========== -->
         <a-sky color="#020205"></a-sky>
-        <a-entity id="stars-container"></a-entity>
+        <a-entity id="fondo"></a-entity>
 
         <!-- ========== SOL ========== -->
         <a-entity position="0 0 0">
             <a-sphere 
-                id="sun" 
+                id="sol" 
                 radius="8" 
                 color="#FDB813"
                 emissive="#FF8C00"
@@ -52,7 +51,7 @@
         <!-- ========== MERCURIO ========== -->
         <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear">
             <a-sphere 
-                id="mercury"
+                id="mercurio"
                 position="18 0 0" 
                 radius="0.8" 
                 color="#B8B8B8"
@@ -84,7 +83,7 @@
                 
                 <!-- Tierra - Océanos más brillantes -->
                 <a-sphere 
-                    id="earth"
+                    id="tierra"
                     radius="1.6" 
                     color="#228BFF"
                     metalness="0.15"
@@ -120,7 +119,7 @@
                 <!-- ========== LUNA ========== -->
                 <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 3000; easing: linear">
                     <a-sphere 
-                        id="moon"
+                        id="luna"
                         position="3.5 0 0" 
                         radius="0.4" 
                         color="#D3D3D3"
@@ -137,7 +136,7 @@
         <!-- ========== MARTE ========== -->
         <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 15000; easing: linear">
             <a-sphere 
-                id="mars"
+                id="marte"
                 position="48 0 0" 
                 radius="0.9" 
                 color="#E25822"
@@ -171,7 +170,7 @@
             <a-entity position="110 0 0">
                 <!-- Saturno -->
                 <a-sphere 
-                    id="saturn"
+                    id="saturno"
                     radius="4.5" 
                     color="#F0E68C"
                     metalness="0.1"
@@ -179,7 +178,7 @@
                     animation="property: rotation; to: 0 360 0; loop: true; dur: 4500; easing: linear">
                 </a-sphere>
                 
-                <!-- Anillos de Saturno - HORIZONTALES (plano ecuatorial) -->
+                <!-- Anillos de Saturno -->
                 <!-- rotation="-90 0 0" pone el anillo horizontal, paralelo al plano orbital -->
                 <a-entity rotation="-90 0 0">
                     <a-ring 
@@ -218,7 +217,7 @@
         <!-- ========== URANO ========== -->
         <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 50000; easing: linear">
             <a-sphere 
-                id="uranus"
+                id="urano"
                 position="145 0 0" 
                 radius="2.8" 
                 color="#40E0D0"
@@ -233,7 +232,7 @@
         <!-- ========== NEPTUNO ========== -->
         <a-entity animation="property: rotation; to: 0 360 0; loop: true; dur: 65000; easing: linear">
             <a-sphere 
-                id="neptune"
+                id="neptuno"
                 position="175 0 0" 
                 radius="2.7" 
                 color="#1E90FF"
@@ -253,7 +252,7 @@
     <!-- ========== SCRIPT PARA GENERAR ESTRELLAS ========== -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const starsContainer = document.querySelector('#stars-container');
+            const starsContainer = document.querySelector('#fondo');
             const starCount = 800;
             const distance = 250;
             
