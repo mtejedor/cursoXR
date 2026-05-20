@@ -7,19 +7,21 @@
 </head>
 <body>
     <a-scene>
+        <!-- ========== ASSETS (precarga de audio) ========== -->
+        <a-assets>
+            <audio id="sonido-timbre" src="audios/timbre.mp3" preload="auto"></audio>
+        </a-assets>
+
         <!-- Entorno base -->
         <a-entity environment="preset: forest; skyType: atmosphere; lighting: none; groundColor: #2d4a1e"></a-entity>
 
         <!-- ========== SOL CON ANIMACIÓN CÍCLICA ========== -->
-        <!-- Se mueve en arco: amanecer → día → atardecer → noche → amanecer -->
         <a-entity 
             id="sol-rig"
             position="0 0 0"
             animation="property: rotation; from: 0 0 0; to: 0 0 360; loop: true; dur: 10000; easing: linear">
             
-            <!-- El sol orbita a distancia -->
             <a-entity position="50 0 0">
-                <!-- Esfera del sol -->
                 <a-sphere 
                     radius="3" 
                     color="#FFD700" 
@@ -27,19 +29,18 @@
                     animation="property: color; from: #FF4500; to: #FFD700; dur: 2500; dir: alternate; loop: true; easing: easeInOutSine"
                     animation__2="property: color; from: #FFD700; to: #FF4500; dur: 2500; delay: 2500; dir: alternate; loop: true; easing: easeInOutSine">
                 </a-sphere>
-                <!-- Glow -->
                 <a-sphere radius="4.5" color="#FFA500" opacity="0.3" transparent="true" shader="flat"></a-sphere>
             </a-entity>
         </a-entity>
 
-        <!-- Luz del sol que sigue la esfera -->
+        <!-- Luz del sol -->
         <a-entity 
             light="type: directional; color: #FFD700; intensity: 1; castShadow: true"
             animation="property: rotation; from: 0 0 0; to: 0 0 360; loop: true; dur: 10000; easing: linear">
             <a-entity position="50 0 0"></a-entity>
         </a-entity>
 
-        <!-- Luz ambiental que cambia con el ciclo -->
+        <!-- Luz ambiental -->
         <a-entity 
             light="type: ambient; color: #606080; intensity: 0.4"
             animation="property: light.color; from: #4a3a5a; to: #606080; dur: 2500; dir: alternate; loop: true; easing: easeInOutSine"
@@ -48,7 +49,7 @@
             animation__4="property: light.intensity; from: 0.5; to: 0.08; dur: 2500; delay: 2500; dir: alternate; loop: true; easing: easeInOutSine">
         </a-entity>
 
-        <!-- Luz de hemisferio (cielo) -->
+        <!-- Luz de hemisferio -->
         <a-entity 
             light="type: hemisphere; color: #87CEEB; groundColor: #2d4a1e; intensity: 0.4"
             animation="property: light.color; from: #FF8C42; to: #87CEEB; dur: 2500; dir: alternate; loop: true; easing: easeInOutSine"
@@ -57,7 +58,7 @@
             animation__4="property: light.intensity; from: 0.5; to: 0.1; dur: 2500; delay: 2500; dir: alternate; loop: true; easing: easeInOutSine">
         </a-entity>
 
-        <!-- Cielo que cambia de color -->
+        <!-- Cielo -->
         <a-sky 
             color="#87CEEB"
             animation="property: color; from: #FF8C42; to: #87CEEB; dur: 2500; dir: alternate; loop: true; easing: easeInOutSine"
@@ -66,16 +67,13 @@
 
         <!-- Casa principal -->
         <a-entity position="0 0 -10">
-            <!-- Suelo -->
             <a-plane position="0 0 0" rotation="-90 0 0" width="15" height="12" color="#8B7355" shadow="receive: true"></a-plane>
             
-            <!-- Paredes -->
             <a-box position="0 2 0" width="10" height="4" depth="8" color="#F5DEB3" shadow="receive: true"></a-box>
 
-            <!-- Techo -->
             <a-cone position="0 5.5 0" radius-bottom="7.5" height="3.5" color="#8B4513" segments-radial="4" rotation="0 45 0" shadow="receive: true"></a-cone>
 
-            <!-- Puerta con SONIDO DE TIMBRE al hacer clic -->
+            <!-- Puerta con SONIDO DE TIMBRE -->
             <a-box 
                 id="puerta"
                 position="0 1 4.1" 
@@ -85,17 +83,17 @@
                 color="#654321" 
                 shadow="receive: true"
                 class="clickable"
-                sound="src: url(audios/timbre.mp3); on: click; volume: 1">
+                sound="src: #sonido-timbre; on: click; volume: 1">
             </a-box>
             
-            <!-- Pomo de la puerta clickable -->
+            <!-- Pomo clickable -->
             <a-sphere 
                 id="pomo"
                 position="-0.7 1 4.25" 
                 radius="0.1" 
                 color="#FFD700"
                 class="clickable"
-                sound="src: url(audios/timbre.mp3); on: click; volume: 1">
+                sound="src: #sonido-timbre; on: click; volume: 1">
             </a-sphere>
 
             <!-- Ventanas -->
@@ -129,7 +127,7 @@
                 </a-plane>
             </a-entity>
 
-            <!-- Luz interior (se enciende de noche con la animación del cielo) -->
+            <!-- Luz interior -->
             <a-entity 
                 light="type: point; color: #FFA500; intensity: 0; distance: 10; decay: 2" 
                 position="0 2 0"
@@ -153,7 +151,7 @@
             <a-cone position="0 4.5 0" radius-bottom="2.5" height="4" color="#228B22"></a-cone>
         </a-entity>
 
-        <!-- Cámara con cursor para poder hacer clic -->
+        <!-- Cámara con cursor -->
         <a-entity position="0 2 15">
             <a-camera look-controls wasd-controls="acceleration: 100">
                 <a-cursor color="#FFD700" scale="0.5 0.5 0.5"></a-cursor>
