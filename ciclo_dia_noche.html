@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Casa A-Frame - Ciclo Día/Noche</title>
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
+</head>
+<body>
+    <a-scene>
+        <!-- Entorno base (sin luz propia, la controlamos nosotros) -->
+        <a-entity environment="preset: forest; skyType: atmosphere; lighting: none; groundColor: #2d4a1e; groundTexture: walkernoise"></a-entity>
+
+        <!-- ========== SOL (esfera visible que se mueve) ========== -->
+        <a-entity id="sol-entidad" position="0 0 0">
+            <!-- Esfera del sol -->
+            <a-sphere 
+                id="sol-esfera" 
+                radius="3" 
+                color="#FFD700" 
+                shader="flat"
+                position="0 0 0">
+            </a-sphere>
+            <!-- Glow del sol -->
+            <a-sphere 
+                radius="4.5" 
+                color="#FFA500" 
+                opacity="0.3" 
+                transparent="true" 
+                shader="flat">
+            </a-sphere>
+            <!-- Halo exterior -->
+            <a-sphere 
+                radius="6" 
+                color="#FF6347" 
+                opacity="0.15" 
+                transparent="true" 
+                shader="flat">
+            </a-sphere>
+        </a-entity>
+
+        <!-- ========== LUNA (aparece de noche) ========== -->
+        <a-entity id="luna-entidad" position="0 0 0" visible="false">
+            <a-sphere 
+                id="luna-esfera" 
+                radius="1.5" 
+                color="#F0F0F0" 
+                shader="flat">
+            </a-sphere>
+            <a-sphere 
+                radius="2" 
+                color="#E0E0FF" 
+                opacity="0.2" 
+                transparent="true" 
+                shader="flat">
+            </a-sphere>
+        </a-entity>
+
+        <!-- ========== LUCES DINÁMICAS ========== -->
+        
+        <!-- Luz del sol (directional que rota con la esfera) -->
+        <a-entity id="luz-sol" light="type: directional; color: #FFD700; intensity: 1; castShadow: true" position="0 0 0"></a-entity>
+        
+        <!-- Luz ambiental global (cambia con el ciclo) -->
+        <a-entity id="luz-ambiental" light="type: ambient; color: #404060; intensity: 0.3"></a-entity>
+        
+        <!-- Luz de relleno del cielo -->
+        <a-entity id="luz-cielo" light="type: hemisphere; color: #87CEEB; groundColor: #2d4a1e; intensity: 0.4"></a-entity>
+
+        <!-- Casa principal -->
+        <a-entity position="0 0 -10">
+            <!-- Suelo -->
+            <a-plane position="0 0 0" rotation="-90 0 0" width="15" height="12" color="#8B7355" shadow="receive: true"></a-plane>
+            
+            <!-- Paredes -->
+            <a-box position="0 2 0" width="10" height="4" depth="8" color="#F5DEB3" shadow="receive: true"></a-box>
+
+            <!-- Techo -->
+            <a-cone position="0 5.5 0" radius-bottom="7.5" height="3.5" color="#8B4513" segments-radial="4" rotation="0 45 0" shadow="receive: true"></a-cone>
+
+            <!-- Puerta -->
+            <a-box position="0 1 4.1" width="2" height="3" depth="0.2" color="#654321" shadow="receive: true"></a-box>
+            <a-sphere position="-0.7 1 4.25" radius="0.1" color="#FFD700"></a-sphere>
+
+            <!-- Ventanas -->
+            <a-box position="-3 2 4.1" width="2" height="2" depth="0.2" color="#87CEEB" opacity="0.6" transparent="true"></a-box>
+            <a-box position="3 2 4.1" width="2" height="2" depth="0.2" color="#87CEEB" opacity="0.6" transparent="true"></a-box>
+            <a-box position="-3 2 -4.1" width="2" height="2" depth="0.2" color="#87CEEB" opacity="0.6" transparent="true"></a-box>
+            <a-box position="3 2 -4.1" width="2" height="2" depth="0.2" color="#87CEEB" opacity="0.6" transparent="true"></a-box>
+
+            <!-- Chimenea -->
+            <a-box position="3 6.5 -2" width="1" height="2.5" depth="1" color="#8B0000"></a-box>
+
+            <!-- Porche -->
+            <a-box position="0 0.2 5" width="4" height="0.4" depth="2" color="#8B4513"></a-box>
+            <a-cylinder position="-1.5 0.5 5.5" radius="0.15" height="1" color="#654321"></a-cylinder>
+            <a-cylinder position="1.5 0.5 5.5" radius="0.15" height="1" color="#654321"></a-cylinder>
+
+            <!-- Mástil de la bandera -->
+            <a-cylinder position="0 9 0" radius="0.08" height="4" color="#C0C0C0"></a-cylinder>
+            <a-sphere position="0 11 0" radius="0.15" color="#FFD700"></a-sphere>
+
+            <!-- Bandera ondeando -->
+            <a-entity position="0 10.5 0">
+                <a-plane position="1 0 0" width="2.5" height="1.5" color="#FF0000" side="double" 
+                    animation="property: scale; from: 1 1 1; to: 0.95 1 1; dir: alternate; dur: 800; loop: true; easing: easeInOutSine">
+                </a-plane>
+                <a-plane position="1 0 0.01" width="2.5" height="1.5" color="#FFFFFF" side="double"
+                    animation="property: scale; from: 1 1 1; to: 0.95 1 1; dir: alternate; dur: 800; loop: true; easing: easeInOutSine; delay: 100">
+                </a-plane>
+                <a-plane position="1 0 0.02" width="2.5" height="1.5" color="#0000FF" side="double"
+                    animation="property: scale; from: 1 1 1; to: 0.95 1 1; dir: alternate; dur: 800; loop: true; easing: easeInOutSine; delay: 200">
+                </a-plane>
+            </a-entity>
+
+            <!-- Luz cálida interior (se enciende de noche) -->
+            <a-entity id="luz-interior" light="type: point; color: #FFA500; intensity: 0; distance: 10; decay: 2" position="0 2 0"></a-entity>
+        </a-entity>
+
+        <!-- Árboles -->
+        <a-entity position="-12 0 -8">
+            <a-cylinder position="0 1.5 0" radius="0.4" height="3" color="#8B4513"></a-cylinder>
+            <a-cone position="0 4.5 0" radius-bottom="2.5" height="4" color="#228B22"></a-cone>
+        </a-entity>
+        <a-entity position="12 0 -6">
+            <a-cylinder position="0 1.5 0" radius="0.4" height="3" color="#8B4513"></a-cylinder>
+            <a-cone position="0 4.5 0" radius-bottom="2.5" height="4" color="#228B22"></a-cone>
+        </a-entity>
+        <a-entity position="-10 0 5">
+            <a-cylinder position="0 1.5 0" radius="0.4" height="3" color="#8B4513"></a-cylinder>
+            <a-cone position="0 4.5 0" radius-bottom="2.5" height="4" color="#228B22"></a-cone>
+        </a-entity>
+
+        <!-- Cámara -->
+        <a-entity camera look-controls wasd-controls="acceleration: 100" position="0 2 15"></a-entity>
+    </a-scene>
+
+    <!-- ========== SCRIPT CICLO DÍA/NOCHE ========== -->
+    <script>
+        // Elementos
+        const solEntidad = document.querySelector('#sol-entidad');
+        const solEsfera = document.querySelector('#sol-esfera');
+        const lunaEntidad = document.querySelector('#luna-entidad');
+        const luzSol = document.querySelector('#luz-sol');
+        const luzAmbiental = document.querySelector('#luz-ambiental');
+        const luzCielo = document.querySelector('#luz-cielo');
+        const luzInterior = document.querySelector('#luz-interior');
+        const scene = document.querySelector('a-scene');
+        const sky = document.querySelector('a-sky');
+
+        // Configuración del ciclo (10 segundos = 1 día completo)
+        const DURACION_CICLO = 10000; // ms
+
+        // Fases del día con colores y posiciones
+        const fases = {
+            amanecer: {
+                hora: 0,        // 0% del ciclo
+                colorSol: '#FF4500',    // Rojo anaranjado
+                colorLuz: '#FF6347',    // Tomate
+                colorCielo: '#FF8C42',  // Naranja cálido
+                colorAmbiental: '#4a3a5a',
+                intensidadSol: 0.6,
+                intensidadAmbiental: 0.25,
+                alturaSol: 5
+            },
+            dia: {
+                hora: 0.25,     // 25% del ciclo
+                colorSol: '#FFD700',    // Dorado
+                colorLuz: '#FFFACD',    // Limón chiffon
+                colorCielo: '#87CEEB',  // Azul cielo
+                colorAmbiental: '#606080',
+                intensidadSol: 1.2,
+                intensidadAmbiental: 0.5,
+                alturaSol: 50
+            },
+            atardecer: {
+                hora: 0.5,      // 50% del ciclo
+                colorSol: '#FF4500',    // Rojo anaranjado
+                colorLuz: '#FF8C00',    // Naranja oscuro
+                colorCielo: '#FF6347',  // Tomate
+                colorAmbiental: '#5a3a4a',
+                intensidadSol: 0.7,
+                intensidadAmbiental: 0.2,
+                alturaSol: 5
+            },
+            noche: {
+                hora: 0.75,     // 75% del ciclo
+                colorSol: '#1a1a2e',    // Casi invisible
+                colorLuz: '#1a1a2e',    // Apagado
+                colorCielo: '#0a0a1a',  // Azul muy oscuro
+                colorAmbiental: '#1a1a2e',
+                intensidadSol: 0,
+                intensidadAmbiental: 0.08,
+                alturaSol: -20
+            }
+        };
+
+        function interpolarColor(color1, color2, factor) {
+            // Convertir hex a RGB
+            const r1 = parseInt(color1.slice(1, 3), 16);
+            const g1 = parseInt(color1.slice(3, 5), 16);
+            const b1 = parseInt(color1.slice(5, 7), 16);
+            
+            const r2 = parseInt(color2.slice(1, 3), 16);
+            const g2 = parseInt(color2.slice(3, 5), 16);
+            const b2 = parseInt(color2.slice(5, 7), 16);
+            
+            // Interpolar
+            const r = Math.round(r1 + (r2 - r1) * factor);
+            const g = Math.round(g1 + (g2 - g1) * factor);
+            const b = Math.round(b1 + (b2 - b1) * factor);
+            
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function obtenerFaseActual(progreso) {
+            if (progreso < 0.25) return { actual: fases.amanecer, siguiente: fases.dia, factor: progreso / 0.25 };
+            if (progreso < 0.5) return { actual: fases.dia, siguiente: fases.atardecer, factor: (progreso - 0.25) / 0.25 };
+            if (progreso < 0.75) return { actual: fases.atardecer, siguiente: fases.noche, factor: (progreso - 0.5) / 0.25 };
+            return { actual: fases.noche, siguiente: fases.amanecer, factor: (progreso - 0.75) / 0.25 };
+        }
+
+        let inicio = Date.now();
+
+        function animarCiclo() {
+            const ahora = Date.now();
+            const transcurrido = (ahora - inicio) % DURACION_CICLO;
+            const progreso = transcurrido / DURACION_CICLO; // 0 a 1
+
+            const { actual, siguiente, factor } = obtenerFaseActual(progreso);
+
+            // Interpolar colores
+            const colorSol = interpolarColor(actual.colorSol, siguiente.colorSol, factor);
+            const colorLuz = interpolarColor(actual.colorLuz, siguiente.colorLuz, factor);
+            const colorCielo = interpolarColor(actual.colorCielo, siguiente.colorCielo, factor);
+            const colorAmbiental = interpolarColor(actual.colorAmbiental, siguiente.colorAmbiental, factor);
+
+            // Interpolar intensidades
+            const intensidadSol = actual.intensidadSol + (siguiente.intensidadSol - actual.intensidadSol) * factor;
+            const intensidadAmbiental = actual.intensidadAmbiental + (siguiente.intensidadAmbiental - actual.intensidadAmbiental) * factor;
+
+            // Calcular posición del sol (arco por el cielo)
+            // Ángulo: 0 = este, PI/2 = cenit, PI = oeste
+            const angulo = progreso * Math.PI * 2 - Math.PI / 2;
+            const radio = 60;
+            const x = Math.cos(angulo) * radio;
+            const y = Math.sin(angulo) * radio;
+            const z = -30; // Detrás de la escena
+
+            // Actualizar posición del sol
+            solEntidad.setAttribute('position', `${x} ${y} ${z}`);
+            luzSol.setAttribute('position', `${x} ${y} ${z}`);
+
+            // Actualizar colores
+            solEsfera.setAttribute('color', colorSol);
+            luzSol.setAttribute('light', 'color', colorLuz);
+            luzSol.setAttribute('light', 'intensity', intensidadSol);
+            luzAmbiental.setAttribute('light', 'color', colorAmbiental);
+            luzAmbiental.setAttribute('light', 'intensity', intensidadAmbiental);
+            luzCielo.setAttribute('light', 'color', colorCielo);
+
+            // Actualizar cielo (si existe el elemento sky)
+            if (sky) {
+                sky.setAttribute('color', colorCielo);
+            }
+
+            // Mostrar/ocultar luna
+            if (progreso > 0.5 && progreso < 1.0) {
+                lunaEntidad.setAttribute('visible', true);
+                const anguloLuna = (progreso - 0.5) * Math.PI * 2 - Math.PI / 2;
+                const xLuna = Math.cos(anguloLuna) * radio;
+                const yLuna = Math.sin(anguloLuna) * radio;
+                lunaEntidad.setAttribute('position', `${xLuna} ${yLuna} ${z}`);
+            } else {
+                lunaEntidad.setAttribute('visible', false);
+            }
+
+            // Luz interior de la casa (se enciende de noche)
+            if (progreso > 0.6 || progreso < 0.1) {
+                const intensidadInterior = (progreso > 0.6) ? 
+                    Math.min((progreso - 0.6) * 3, 1) : 
+                    Math.min((0.1 - progreso) * 3, 1);
+                luzInterior.setAttribute('light', 'intensity', intensidadInterior * 0.8);
+            } else {
+                luzInterior.setAttribute('light', 'intensity', 0);
+            }
+
+            requestAnimationFrame(animarCiclo);
+        }
+
+        // Iniciar ciclo cuando la escena esté lista
+        document.querySelector('a-scene').addEventListener('loaded', function() {
+            inicio = Date.now();
+            animarCiclo();
+            console.log('🌅 Ciclo día/noche iniciado - 10 segundos por ciclo completo');
+        });
+    </script>
+</body>
+</html>
